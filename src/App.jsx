@@ -40,14 +40,12 @@ function App() {
   const [cards, setCards] = useState([{ ...jesusCard, isFlipped: true, position: "center" }]);
   const [isShuffling, setIsShuffling] = useState(false);
   const [showDeck, setShowDeck] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCardAnimation, setSelectedCardAnimation] = useState(null);
   const [tarotDeck, setTarotDeck] = useState(initialTarotDeck);
 
   const clearBoard = () => {
     setCards([{ ...jesusCard, isFlipped: true, position: "center" }]);
     setShowDeck(false);
-    setSelectedCard(null);
     setSelectedCardAnimation(null);
     setTarotDeck(initialTarotDeck); // Reset deck to initial state
   };
@@ -55,7 +53,6 @@ function App() {
   const shuffleCards = () => {
     setIsShuffling(true);
     setShowDeck(false);
-    setSelectedCard(null);
     setSelectedCardAnimation(null);
     setTimeout(() => {
       const randomizedCards = tarotDeck
@@ -81,14 +78,14 @@ function App() {
     if (cards.filter(c => c.position !== "center").length < 5) {
       const targetPosition = getNextPosition(cards);
       const cardIndex = tarotDeck.findIndex(c => c.id === card.id);
-      const xOffset = cardIndex * 80 - (tarotDeck.length * 40);
-      setSelectedCardAnimation({ card, from: { x: xOffset + 600, y: 400 }, to: getPositionStyle(targetPosition) });
+      const row = Math.floor(cardIndex / 10);
+      const col = cardIndex % 10;
+      const xOffset = col * 100 + 50;
+      const yOffset = row * 150 + 50;
+      setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove card immediately
+      setSelectedCardAnimation({ card, from: { x: xOffset, y: yOffset }, to: getPositionStyle(targetPosition) });
       setTimeout(() => {
         setCards([...cards, { ...card, isFlipped: true, position: targetPosition }]);
-        setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card
-        if (cards.filter(c => c.position !== "center").length === 4) {
-          setShowDeck(false);
-        }
         setSelectedCardAnimation(null);
       }, 500);
     }
@@ -110,10 +107,6 @@ function App() {
       bottom: { left: "125px", top: "490px" },
     };
     return positions[position] || positions["below"];
-  };
-
-  const flipCard = (card) => {
-    setSelectedCard(selectedCard?.id === card.id ? null : card);
   };
 
   return (
@@ -178,7 +171,7 @@ function App() {
           {cards.map((card, index) => (
             <motion.div
               key={card.id}
-              onClick={() => flipCard(card)}
+              onClick={() => { /* Flip logic removed for simplicity, re-add if needed */ }}
               initial={{ x: card.animateFrom?.x || 0, y: card.animateFrom?.y || 0, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...getPositionStyle(card.position) }}
               transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.2 }}
@@ -222,16 +215,16 @@ function App() {
         </div>
       )}
 
-      {selectedCard && (
+      {selectedCardAnimation && (
         <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
           <img
-            src={selectedCard.image}
-            alt={selectedCard.name}
+            src={selectedCardAnimation.card.image}
+            alt={selectedCardAnimation.card.name}
             style={{ width: "200px", height: "300px", borderRadius: "10px" }}
           />
           <div style={{ maxWidth: "300px", textAlign: "left" }}>
-            <h3>{selectedCard.name}</h3>
-            <p>{selectedCard.bio}</p>
+            <h3>{selectedCardAnimation.card.name}</h3>
+            <p>{selectedCardAnimation.card.bio}</p>
           </div>
         </div>
       )}
@@ -250,7 +243,7 @@ function App() {
       )}
 
       <div
-        onClick={() => { setShowDeck(!showDeck); setSelectedCard(null); }}
+        onClick={() => { setShowDeck(!showDeck); }}
         style={{
           cursor: "pointer",
           marginTop: "20px",
@@ -267,33 +260,37 @@ function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ position: "relative", width: "1200px", height: "200px", margin: "20px auto" }}
+          style={{ position: "relative", width: "1000px", height: "300px", margin: "20px auto" }}
         >
-          {tarotDeck.map((card, index) => (
-            <motion.div
-              key={card.id}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.3 }}
-              whileHover={{ y: -20, scale: 1.1 }}
-              style={{
-                width: "80px",
-                height: "120px",
-                position: "absolute",
-                left: index * 100 + 50,
-                top: "50px",
-                cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
-              }}
-              onClick={() => selectCardFromDeck(card)}
-            >
-              <img
-                src={card.image}
-                alt={card.name}
-                style={{ width: "100%", height: "100%", borderRadius: "5px" }}
-                onError={() => console.log(`Failed to load image: ${card.image}`)}
-              />
-            </motion.div>
-          ))}
+          {tarotDeck.map((card, index) => {
+            const row = Math.floor(index / 10);
+            const col = index % 10;
+            return (
+              <motion.div
+                key={card.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
+                whileHover={{ y: -20, scale: 1.1 }}
+                style={{
+                  width: "80px",
+                  height: "120px",
+                  position: "absolute",
+                  left: col * 100 + 50,
+                  top: row * 150 + 50,
+                  cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
+                }}
+                onClick={() => selectCardFromDeck(card)}
+              >
+                <img
+                  src={card.image}
+                  alt={card.name}
+                  style={{ width: "100%", height: "100%", borderRadius: "5px" }}
+                  onError={() => console.log(`Failed to load image: ${card.image}`)}
+                />
+              </motion.div>
+            );
+          })}
         </motion.div>
       )}
     </div>
