@@ -192,7 +192,7 @@ function App() {
 
       {cards.length > 0 && (
         <div style={{ marginTop: "20px" }}>
-          <h3>Breath Prayer</h3>
+          <h3>Sanctified Rosary of Holy Breath</h3>
           <ul style={{ listStyleType: "disc", textAlign: "left", display: "inline-block" }}>
             {cards.map(card => (
               <li key={card.id}>{card.breathPrayer}</li>
