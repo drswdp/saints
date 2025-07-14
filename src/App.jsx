@@ -58,30 +58,20 @@ function App() {
     setSelectedCard(null);
     setSelectedCardAnimation(null);
     setTimeout(() => {
-      const randomizedCards = tarotDeck
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 5)
-        .map(card => ({ ...card, isFlipped: true }));
-      setCards([
-        { ...jesusCard, isFlipped: true, position: "center" },
-        { ...randomizedCards[0], isFlipped: true, position: "below" },
-        { ...randomizedCards[1], isFlipped: true, position: "left" },
-        { ...randomizedCards[2], isFlipped: true, position: "above" },
-        { ...randomizedCards[3], isFlipped: true, position: "right" },
-        { ...randomizedCards[4], isFlipped: true, position: "bottom" },
-      ]);
       setIsShuffling(false);
+      setShowDeck(true); // Show full deck after shuffle
     }, 1500);
   };
 
   const selectCardFromDeck = (card) => {
     if (card.id === jesusCard.id) return; // Prevent selecting Jesus card
     if (cards.filter(c => c.position !== "center").length < 5) {
-      setSelectedCardAnimation({ card, from: { x: 0, y: 0 }, to: getPositionStyle(getNextPosition(cards)) });
+      const targetPosition = getNextPosition(cards);
+      setSelectedCardAnimation({ card, from: { x: 0, y: 0 }, to: getPositionStyle(targetPosition) });
       setTimeout(() => {
-        setCards([...cards, { ...card, isFlipped: true, position: getNextPosition(cards) }]);
-        setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card from deck
-        if (cards.filter(c => c.position !== "center").length === 3) {
+        setCards([...cards, { ...card, isFlipped: true, position: targetPosition }]);
+        setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card
+        if (cards.filter(c => c.position !== "center").length === 4) {
           setShowDeck(false);
         }
         setSelectedCardAnimation(null);
@@ -157,7 +147,7 @@ function App() {
           transition={{ repeat: 3, duration: 0.5 }}
           style={{ margin: "0 auto", width: "100px", height: "150px" }}
         >
-          <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+          <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
         </motion.div>
       )}
 
@@ -199,7 +189,7 @@ function App() {
           {selectedCardAnimation && (
             <motion.div
               key={selectedCardAnimation.card.id}
-              initial={{ x: selectedCardAnimation.from.x, y: selectedCardAnimation.from.y, opacity: 0 }}
+              initial={{ x: selectedCardAnimation.from.x + 300, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...selectedCardAnimation.to }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               style={{
@@ -258,7 +248,7 @@ function App() {
           display: "inline-block",
         }}
       >
-        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+        <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
       </div>
 
       {showDeck && (
@@ -266,23 +256,23 @@ function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ position: "relative", width: "600px", height: "200px", margin: "20px auto" }}
+          style={{ position: "relative", width: "800px", height: "200px", margin: "20px auto" }}
         >
           {tarotDeck.map((card, index) => {
-            const angle = (index - (tarotDeck.length - 1) / 2) * 5;
-            const xOffset = index * 40 - (tarotDeck.length * 20);
+            const angle = (index - (tarotDeck.length - 1) / 2) * 3;
+            const xOffset = index * 60 - (tarotDeck.length * 30);
             return (
               <motion.div
                 key={card.id}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.3 }}
-                whileHover={{ y: -20, x: "+=10", scale: 1.1, zIndex: index + 1 }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
+                whileHover={{ y: -20, scale: 1.1, zIndex: index + 10 }}
                 style={{
                   width: "80px",
                   height: "120px",
                   position: "absolute",
-                  left: "300px",
+                  left: "400px",
                   transform: `translateX(${xOffset}px) rotate(${angle}deg)`,
                   cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
                   zIndex: index,
