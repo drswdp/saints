@@ -3,35 +3,35 @@ import { motion } from "framer-motion";
 import "./App.css";
 
 const tarotDeck = [
-  { id: 1, name: "Saint Aquinas", image: "./Aquinas.png", meaning: "New beginnings", breathPrayer: "Inhale: I trust. Exhale: I step forward.", bio: "Saint Thomas Aquinas, a 13th-century theologian, is known for his works like the Summa Theologica, blending faith and reason. His teachings guide spiritual seekers to trust in divine wisdom." },
-  { id: 2, name: "Saint Catherine", image: "./Catherine.png", meaning: "Manifestation", breathPrayer: "Inhale: I create. Exhale: I act.", bio: "Saint Catherine of Siena, a mystic and doctor of the Church, inspired action through her visions and letters, urging believers to manifest God’s will with courage." },
-  { id: 3, name: "Faustina", image: "./Faustina.png", meaning: "Intuition", breathPrayer: "Inhale: I listen. Exhale: I know.", bio: "Saint Faustina Kowalska, apostle of Divine Mercy, shared visions of Jesus, teaching trust in God’s mercy and the power of intuitive faith." },
-  { id: 4, name: "Saint Bruno", image: "./Bruno.png", meaning: "Abundance", breathPrayer: "Inhale: I nurture. Exhale: I grow.", bio: "Saint Bruno, founder of the Carthusian Order, embraced solitude and prayer, nurturing spiritual growth and abundant faith in silence." },
-  { id: 5, name: "Alphonsus", image: "./Alphonsus.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Alphonsus Liguori, a moral theologian, founded the Redemptorists, leading with authority grounded in compassion and steadfast faith." },
-  { id: 6, name: "Gabriel the Archangel", image: "./Gabriel.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Gabriel, the messenger angel, delivered divine announcements, symbolizing authority through clear, unwavering communication of God’s will." },
-  { id: 7, name: "Andrew", image: "./Andrew.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Andrew, the apostle, was a fisherman called by Jesus, leading others to faith with steadfast commitment." },
-  { id: 8, name: "Saint Augustine", image: "./Augustine.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Augustine, a convert and bishop, wrote Confessions, guiding souls with his authoritative insights on grace and redemption." },
-  { id: 10, name: "Saint Benedict", image: "./Benedict.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Benedict, father of Western monasticism, established the Rule, leading communities with discipline and spiritual authority." },
-  { id: 11, name: "Saint Dismas", image: "./Dismas.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Dismas, the repentant thief, found salvation on the cross, exemplifying authority through humble acceptance of grace." },
-  { id: 12, name: "Saint Francis", image: "./Francis.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Francis of Assisi, founder of the Franciscans, led with simplicity and love for creation, inspiring steadfast devotion." },
-  { id: 13, name: "Our Lady", image: "./OurLady.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Our Lady, the Virgin Mary, mother of Jesus, leads with maternal authority, guiding believers to her Son." },
-  { id: 14, name: "Saint Mary Magdalene", image: "./Mary.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Mary Magdalene, disciple of Jesus, bore witness to the Resurrection, leading with unwavering faith." },
-  { id: 15, name: "Saint Ignatius", image: "./Ignatius.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Ignatius of Loyola, founder of the Jesuits, led with spiritual exercises, fostering disciplined faith." },
-  { id: 16, name: "Saint Isaac", image: "./Isaac.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Isaac Jogues, a missionary martyr, led with courage among the Native Americans, standing firm in faith." },
-  { id: 17, name: "Saint John", image: "./John.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint John the Apostle, beloved disciple, led with love and authored the Gospel, guiding souls to truth." },
-  { id: 18, name: "Saint Jude", image: "./Jude.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Jude Thaddeus, patron of hopeless causes, led with hope, inspiring steadfast prayer." },
-  { id: 19, name: "Saint Juliana", image: "./Juliana.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Juliana of Liège, promoter of the Feast of Corpus Christi, led with devotion to the Eucharist." },
-  { id: 20, name: "Saint Longinus", image: "./Longinus.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Longinus, the soldier who pierced Jesus’ side, converted and led others to faith." },
-  { id: 21, name: "Michael the Archangel", image: "./Michael.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Michael the Archangel, defender against evil, leads with divine authority and protection." },
-  { id: 22, name: "Saint Montfort", image: "./Montfort.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Louis de Montfort, promoter of Marian devotion, led with zeal for true devotion." },
-  { id: 23, name: "Saint Moses the Black", image: "./Moses.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Moses the Black, a converted robber, led monastic communities with repentance and strength." },
-  { id: 24, name: "Saint Padre Pio", image: "./Padre.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Padre Pio, a stigmatist, led with mystical gifts, guiding souls through confession." },
-  { id: 25, name: "Saint Paul", image: "./Paul.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Paul, apostle to the Gentiles, led with bold preaching, spreading Christianity widely." },
-  { id: 26, name: "Saint Raphael", image: "./Raphael.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Raphael the Archangel, healer and guide, led Tobias with divine authority." },
-  { id: 27, name: "Saint Simon", image: "./Simon.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Simon the Zealot, apostle, led with fervent faith, spreading the Gospel." },
-  { id: 28, name: "Saint Teresa", image: "./Teresa.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Teresa of Ávila, mystic and reformer, led with spiritual authority in the Carmelite Order." },
-  { id: 29, name: "Saint John", image: "./Vianney.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint John Vianney, patron of priests, led with humble authority through tireless ministry." },
-  { id: 30, name: "Saint Vilana", image: "./Vilana.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Vilana, a Dominican tertiary, led with quiet faith and charity." },
+  { id: 1, name: "Saint Aquinas", image: "/Aquinas.png", meaning: "New beginnings", breathPrayer: "Inhale: I trust. Exhale: I step forward.", bio: "Saint Thomas Aquinas, a 13th-century theologian, is known for his works like the Summa Theologica, blending faith and reason. His teachings guide spiritual seekers to trust in divine wisdom." },
+  { id: 2, name: "Saint Catherine", image: "/Catherine.png", meaning: "Manifestation", breathPrayer: "Inhale: I create. Exhale: I act.", bio: "Saint Catherine of Siena, a mystic and doctor of the Church, inspired action through her visions and letters, urging believers to manifest God’s will with courage." },
+  { id: 3, name: "Faustina", image: "/Faustina.png", meaning: "Intuition", breathPrayer: "Inhale: I listen. Exhale: I know.", bio: "Saint Faustina Kowalska, apostle of Divine Mercy, shared visions of Jesus, teaching trust in God’s mercy and the power of intuitive faith." },
+  { id: 4, name: "Saint Bruno", image: "/Bruno.png", meaning: "Abundance", breathPrayer: "Inhale: I nurture. Exhale: I grow.", bio: "Saint Bruno, founder of the Carthusian Order, embraced solitude and prayer, nurturing spiritual growth and abundant faith in silence." },
+  { id: 5, name: "Alphonsus", image: "/Alphonsus.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Alphonsus Liguori, a moral theologian, founded the Redemptorists, leading with authority grounded in compassion and steadfast faith." },
+  { id: 6, name: "Gabriel the Archangel", image: "/Gabriel.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Gabriel, the messenger angel, delivered divine announcements, symbolizing authority through clear, unwavering communication of God’s will." },
+  { id: 7, name: "Andrew", image: "/Andrew.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Andrew, the apostle, was a fisherman called by Jesus, leading others to faith with steadfast commitment." },
+  { id: 8, name: "Saint Augustine", image: "/Augustine.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Augustine, a convert and bishop, wrote Confessions, guiding souls with his authoritative insights on grace and redemption." },
+  { id: 10, name: "Saint Benedict", image: "/Benedict.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Benedict, father of Western monasticism, established the Rule, leading communities with discipline and spiritual authority." },
+  { id: 11, name: "Saint Dismas", image: "/Dismas.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Dismas, the repentant thief, found salvation on the cross, exemplifying authority through humble acceptance of grace." },
+  { id: 12, name: "Saint Francis", image: "/Francis.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Francis of Assisi, founder of the Franciscans, led with simplicity and love for creation, inspiring steadfast devotion." },
+  { id: 13, name: "Our Lady", image: "/OurLady.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Our Lady, the Virgin Mary, mother of Jesus, leads with maternal authority, guiding believers to her Son." },
+  { id: 14, name: "Saint Mary Magdalene", image: "/Mary.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Mary Magdalene, disciple of Jesus, bore witness to the Resurrection, leading with unwavering faith." },
+  { id: 15, name: "Saint Ignatius", image: "/Ignatius.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Ignatius of Loyola, founder of the Jesuits, led with spiritual exercises, fostering disciplined faith." },
+  { id: 16, name: "Saint Isaac", image: "/Isaac.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Isaac Jogues, a missionary martyr, led with courage among the Native Americans, standing firm in faith." },
+  { id: 17, name: "Saint John", image: "/John.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint John the Apostle, beloved disciple, led with love and authored the Gospel, guiding souls to truth." },
+  { id: 18, name: "Saint Jude", image: "/Jude.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Jude Thaddeus, patron of hopeless causes, led with hope, inspiring steadfast prayer." },
+  { id: 19, name: "Saint Juliana", image: "/Juliana.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Juliana of Liège, promoter of the Feast of Corpus Christi, led with devotion to the Eucharist." },
+  { id: 20, name: "Saint Longinus", image: "/Longinus.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Longinus, the soldier who pierced Jesus’ side, converted and led others to faith." },
+  { id: 21, name: "Michael the Archangel", image: "/Michael.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Michael the Archangel, defender against evil, leads with divine authority and protection." },
+  { id: 22, name: "Saint Montfort", image: "/Montfort.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Louis de Montfort, promoter of Marian devotion, led with zeal for true devotion." },
+  { id: 23, name: "Saint Moses the Black", image: "/Moses.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Moses the Black, a converted robber, led monastic communities with repentance and strength." },
+  { id: 24, name: "Saint Padre Pio", image: "/Padre.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Padre Pio, a stigmatist, led with mystical gifts, guiding souls through confession." },
+  { id: 25, name: "Saint Paul", image: "/Paul.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Paul, apostle to the Gentiles, led with bold preaching, spreading Christianity widely." },
+  { id: 26, name: "Saint Raphael", image: "/Raphael.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Raphael the Archangel, healer and guide, led Tobias with divine authority." },
+  { id: 27, name: "Saint Simon", image: "/Simon.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Simon the Zealot, apostle, led with fervent faith, spreading the Gospel." },
+  { id: 28, name: "Saint Teresa", image: "/Teresa.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Teresa of Ávila, mystic and reformer, led with spiritual authority in the Carmelite Order." },
+  { id: 29, name: "Saint John", image: "/Vianney.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint John Vianney, patron of priests, led with humble authority through tireless ministry." },
+  { id: 30, name: "Saint Vilana", image: "/Vilana.png", meaning: "Authority", breathPrayer: "Inhale: I lead. Exhale: I stand firm.", bio: "Saint Vilana, a Dominican tertiary, led with quiet faith and charity." },
 ];
 
 const jesusCard = { id: 0, name: "Jesus", image: "./Jesus.png", meaning: "Divine guidance", breathPrayer: "Inhale: I follow. Exhale: I am guided.", bio: "Jesus Christ, the Son of God, guides humanity with divine love and wisdom, leading all to salvation through His teachings and sacrifice." };
@@ -133,7 +133,7 @@ function App() {
           transition={{ repeat: 3, duration: 0.5 }}
           style={{ margin: "0 auto", width: "100px", height: "150px" }}
         >
-          <img src="./card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+          <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
         </motion.div>
       )}
 
@@ -211,7 +211,7 @@ function App() {
           display: "inline-block",
         }}
       >
-        <img src="./card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
       </div>
 
       {showDeck && (
