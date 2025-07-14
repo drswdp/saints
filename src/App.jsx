@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
 
-const tarotDeck = [
+const initialTarotDeck = [
   { id: 1, name: "Saint Aquinas", image: "/Aquinas.png", invocation: "New beginnings", breathPrayer: "Inhale: I trust. Exhale: I step forward.", bio: "Saint Thomas Aquinas, a 13th-century theologian, is known for his works like the Summa Theologica, blending faith and reason. His teachings guide spiritual seekers to trust in divine wisdom." },
   { id: 2, name: "Saint Catherine", image: "/Catherine.png", invocation: "Manifestation", breathPrayer: "Inhale: I create. Exhale: I act.", bio: "Saint Catherine of Siena, a mystic and doctor of the Church, inspired action through her visions and letters, urging believers to manifest God’s will with courage." },
   { id: 3, name: "Faustina", image: "/Faustina.png", invocation: "Intuition", breathPrayer: "Inhale: I listen. Exhale: I know.", bio: "Saint Faustina Kowalska, apostle of Divine Mercy, shared visions of Jesus, teaching trust in God’s mercy and the power of intuitive faith." },
@@ -42,12 +42,14 @@ function App() {
   const [showDeck, setShowDeck] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCardAnimation, setSelectedCardAnimation] = useState(null);
+  const [tarotDeck, setTarotDeck] = useState(initialTarotDeck);
 
   const clearBoard = () => {
     setCards([{ ...jesusCard, isFlipped: true, position: "center" }]);
     setShowDeck(false);
     setSelectedCard(null);
     setSelectedCardAnimation(null);
+    setTarotDeck(initialTarotDeck); // Reset deck to initial state
   };
 
   const shuffleCards = () => {
@@ -78,6 +80,7 @@ function App() {
       setSelectedCardAnimation({ card, from: { x: 0, y: 0 }, to: getPositionStyle(getNextPosition(cards)) });
       setTimeout(() => {
         setCards([...cards, { ...card, isFlipped: true, position: getNextPosition(cards) }]);
+        setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card from deck
         if (cards.filter(c => c.position !== "center").length === 3) {
           setShowDeck(false);
         }
@@ -154,7 +157,7 @@ function App() {
           transition={{ repeat: 3, duration: 0.5 }}
           style={{ margin: "0 auto", width: "100px", height: "150px" }}
         >
-          <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+          <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
         </motion.div>
       )}
 
@@ -255,7 +258,7 @@ function App() {
           display: "inline-block",
         }}
       >
-        <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
       </div>
 
       {showDeck && (
@@ -266,22 +269,23 @@ function App() {
           style={{ position: "relative", width: "600px", height: "200px", margin: "20px auto" }}
         >
           {tarotDeck.map((card, index) => {
-            const angle = (index - (tarotDeck.length - 1) / 2) * 10;
-            const x = 50 + index * 20 - (tarotDeck.length * 10);
+            const angle = (index - (tarotDeck.length - 1) / 2) * 5;
+            const xOffset = index * 40 - (tarotDeck.length * 20);
             return (
               <motion.div
                 key={card.id}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -20, x: "+=10", scale: 1.1, zIndex: 10 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
+                whileHover={{ y: -20, x: "+=10", scale: 1.1, zIndex: index + 1 }}
                 style={{
                   width: "80px",
                   height: "120px",
                   position: "absolute",
-                  left: "50%",
-                  transform: `translateX(-50%) rotate(${angle}deg) translateY(50px)`,
+                  left: "300px",
+                  transform: `translateX(${xOffset}px) rotate(${angle}deg)`,
                   cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
+                  zIndex: index,
                 }}
                 onClick={() => selectCardFromDeck(card)}
               >
