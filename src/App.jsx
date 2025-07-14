@@ -147,7 +147,7 @@ function App() {
           transition={{ repeat: 3, duration: 0.5 }}
           style={{ margin: "0 auto", width: "100px", height: "150px" }}
         >
-          <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+          <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
         </motion.div>
       )}
 
@@ -189,7 +189,7 @@ function App() {
           {selectedCardAnimation && (
             <motion.div
               key={selectedCardAnimation.card.id}
-              initial={{ x: selectedCardAnimation.from.x + 300, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
+              initial={{ x: selectedCardAnimation.from.x + 400, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...selectedCardAnimation.to }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               style={{
@@ -248,7 +248,7 @@ function App() {
           display: "inline-block",
         }}
       >
-        <img src="/card-back.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
       </div>
 
       {showDeck && (
@@ -256,11 +256,11 @@ function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ position: "relative", width: "800px", height: "200px", margin: "20px auto" }}
+          style={{ position: "relative", width: "1000px", height: "200px", margin: "20px auto" }}
         >
           {tarotDeck.map((card, index) => {
-            const angle = (index - (tarotDeck.length - 1) / 2) * 3;
-            const xOffset = index * 60 - (tarotDeck.length * 30);
+            const angle = (index - (tarotDeck.length - 1) / 2) * 4;
+            const xOffset = index * 70 - (tarotDeck.length * 35);
             return (
               <motion.div
                 key={card.id}
@@ -272,7 +272,7 @@ function App() {
                   width: "80px",
                   height: "120px",
                   position: "absolute",
-                  left: "400px",
+                  left: "500px",
                   transform: `translateX(${xOffset}px) rotate(${angle}deg)`,
                   cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
                   zIndex: index,
