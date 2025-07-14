@@ -108,39 +108,39 @@ function App() {
   return (
     <div style={{ textAlign: "center", padding: "20px", fontFamily: "Garamond", position: "relative" }}>
       <h1>Saints for Sinners</h1>
-      <button
-        onClick={shuffleCards}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-          background: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          marginBottom: "20px",
-        }}
-        disabled={isShuffling}
-      >
-        {isShuffling ? "Shuffling..." : "Shuffle Deck"}
-      </button>
-      <button
-        onClick={clearBoard}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-          background: "#FF5733",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          marginBottom: "20px",
-          marginLeft: "10px",
-        }}
-        disabled={isShuffling}
-      >
-        Clear Board
-      </button>
+      <div style={{ marginBottom: "20px" }}>
+        <button
+          onClick={shuffleCards}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            cursor: "pointer",
+            background: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+          disabled={isShuffling}
+        >
+          {isShuffling ? "Shuffling..." : "Shuffle Deck"}
+        </button>
+        <button
+          onClick={clearBoard}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            cursor: "pointer",
+            background: "#FF5733",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            marginLeft: "10px",
+          }}
+          disabled={isShuffling}
+        >
+          Clear Board
+        </button>
+      </div>
 
       {!isShuffling && (
         <div style={{ position: "relative", width: "350px", height: "650px", margin: "0 auto", background: "#f0f0f0", display: "inline-block" }}>
