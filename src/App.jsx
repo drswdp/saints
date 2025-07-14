@@ -58,8 +58,16 @@ function App() {
     setSelectedCard(null);
     setSelectedCardAnimation(null);
     setTimeout(() => {
+      const randomizedCards = tarotDeck
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5)
+        .map(card => ({ ...card, isFlipped: true }));
+      setCards([
+        { ...jesusCard, isFlipped: true, position: "center" },
+        ...randomizedCards.map((card, i) => ({ ...card, position: ["below", "left", "above", "right", "bottom"][i] }))
+      ]);
+      setTarotDeck(tarotDeck.filter(card => !randomizedCards.some(r => r.id === card.id))); // Remove placed cards
       setIsShuffling(false);
-      setShowDeck(true); // Show full deck after shuffle
     }, 1500);
   };
 
@@ -67,7 +75,9 @@ function App() {
     if (card.id === jesusCard.id) return; // Prevent selecting Jesus card
     if (cards.filter(c => c.position !== "center").length < 5) {
       const targetPosition = getNextPosition(cards);
-      setSelectedCardAnimation({ card, from: { x: 0, y: 0 }, to: getPositionStyle(targetPosition) });
+      const cardIndex = tarotDeck.findIndex(c => c.id === card.id);
+      const xOffset = cardIndex * 80 - (tarotDeck.length * 40);
+      setSelectedCardAnimation({ card, from: { x: xOffset, y: 100 }, to: getPositionStyle(targetPosition) });
       setTimeout(() => {
         setCards([...cards, { ...card, isFlipped: true, position: targetPosition }]);
         setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card
@@ -189,7 +199,7 @@ function App() {
           {selectedCardAnimation && (
             <motion.div
               key={selectedCardAnimation.card.id}
-              initial={{ x: selectedCardAnimation.from.x + 400, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
+              initial={{ x: selectedCardAnimation.from.x, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...selectedCardAnimation.to }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               style={{
@@ -256,11 +266,11 @@ function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          style={{ position: "relative", width: "1000px", height: "200px", margin: "20px auto" }}
+          style={{ position: "relative", width: "1200px", height: "200px", margin: "20px auto" }}
         >
           {tarotDeck.map((card, index) => {
-            const angle = (index - (tarotDeck.length - 1) / 2) * 4;
-            const xOffset = index * 70 - (tarotDeck.length * 35);
+            const angle = (index - (tarotDeck.length - 1) / 2) * 5;
+            const xOffset = index * 80 - (tarotDeck.length * 40);
             return (
               <motion.div
                 key={card.id}
@@ -272,7 +282,7 @@ function App() {
                   width: "80px",
                   height: "120px",
                   position: "absolute",
-                  left: "500px",
+                  left: "600px",
                   transform: `translateX(${xOffset}px) rotate(${angle}deg)`,
                   cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
                   zIndex: index,
