@@ -62,10 +62,15 @@ function App() {
         .sort(() => Math.random() - 0.5)
         .slice(0, 5)
         .map(card => ({ ...card, isFlipped: true }));
-      setCards([
+      const newCards = [
         { ...jesusCard, isFlipped: true, position: "center" },
         ...randomizedCards.map((card, i) => ({ ...card, position: ["below", "left", "above", "right", "bottom"][i] }))
-      ]);
+      ];
+      setCards(newCards.map((card, i) => ({
+        ...card,
+        animateFrom: { x: 600, y: 400 }, // Center of screen as initial position
+        animateTo: getPositionStyle(card.position)
+      })));
       setTarotDeck(tarotDeck.filter(card => !randomizedCards.some(r => r.id === card.id))); // Remove placed cards
       setIsShuffling(false);
     }, 1500);
@@ -77,7 +82,7 @@ function App() {
       const targetPosition = getNextPosition(cards);
       const cardIndex = tarotDeck.findIndex(c => c.id === card.id);
       const xOffset = cardIndex * 80 - (tarotDeck.length * 40);
-      setSelectedCardAnimation({ card, from: { x: xOffset, y: 100 }, to: getPositionStyle(targetPosition) });
+      setSelectedCardAnimation({ card, from: { x: xOffset + 600, y: 400 }, to: getPositionStyle(targetPosition) });
       setTimeout(() => {
         setCards([...cards, { ...card, isFlipped: true, position: targetPosition }]);
         setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove selected card
@@ -170,22 +175,18 @@ function App() {
           <div style={{ position: "absolute", width: "100px", height: "150px", left: "125px", top: "0px", border: "2px dashed #888", borderRadius: "5px" }}></div>
           <div style={{ position: "absolute", width: "100px", height: "150px", left: "235px", top: "150px", border: "2px dashed #888", borderRadius: "5px" }}></div>
           <div style={{ position: "absolute", width: "100px", height: "150px", left: "125px", top: "490px", border: "2px dashed #888", borderRadius: "5px" }}></div>
-          {cards.map(card => (
+          {cards.map((card, index) => (
             <motion.div
               key={card.id}
               onClick={() => flipCard(card)}
-              animate={{ scale: selectedCard?.id === card.id ? 1.2 : 1 }}
+              initial={{ x: card.animateFrom?.x || 0, y: card.animateFrom?.y || 0, opacity: 0 }}
+              animate={{ x: 0, y: 0, opacity: 1, ...getPositionStyle(card.position) }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.2 }}
               style={{
                 width: "100px",
                 height: "150px",
                 position: "absolute",
                 cursor: "pointer",
-                ...(card.position === "center" && { left: "125px", top: "150px" }),
-                ...(card.position === "below" && { left: "125px", top: "310px" }),
-                ...(card.position === "left" && { left: "15px", top: "150px" }),
-                ...(card.position === "above" && { left: "125px", top: "0px" }),
-                ...(card.position === "right" && { left: "235px", top: "150px" }),
-                ...(card.position === "bottom" && { left: "125px", top: "490px" }),
               }}
             >
               <img
@@ -199,7 +200,7 @@ function App() {
           {selectedCardAnimation && (
             <motion.div
               key={selectedCardAnimation.card.id}
-              initial={{ x: selectedCardAnimation.from.x, y: selectedCardAnimation.from.y + 100, opacity: 0 }}
+              initial={{ x: selectedCardAnimation.from.x, y: selectedCardAnimation.from.y, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...selectedCardAnimation.to }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               style={{
@@ -268,36 +269,31 @@ function App() {
           transition={{ duration: 0.5 }}
           style={{ position: "relative", width: "1200px", height: "200px", margin: "20px auto" }}
         >
-          {tarotDeck.map((card, index) => {
-            const angle = (index - (tarotDeck.length - 1) / 2) * 5;
-            const xOffset = index * 80 - (tarotDeck.length * 40);
-            return (
-              <motion.div
-                key={card.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
-                whileHover={{ y: -20, scale: 1.1, zIndex: index + 10 }}
-                style={{
-                  width: "80px",
-                  height: "120px",
-                  position: "absolute",
-                  left: "600px",
-                  transform: `translateX(${xOffset}px) rotate(${angle}deg)`,
-                  cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
-                  zIndex: index,
-                }}
-                onClick={() => selectCardFromDeck(card)}
-              >
-                <img
-                  src={card.image}
-                  alt={card.name}
-                  style={{ width: "100%", height: "100%", borderRadius: "5px" }}
-                  onError={() => console.log(`Failed to load image: ${card.image}`)}
-                />
-              </motion.div>
-            );
-          })}
+          {tarotDeck.map((card, index) => (
+            <motion.div
+              key={card.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.3 }}
+              whileHover={{ y: -20, scale: 1.1 }}
+              style={{
+                width: "80px",
+                height: "120px",
+                position: "absolute",
+                left: index * 100 + 50,
+                top: "50px",
+                cursor: cards.filter(c => c.position !== "center").length < 5 ? "pointer" : "default",
+              }}
+              onClick={() => selectCardFromDeck(card)}
+            >
+              <img
+                src={card.image}
+                alt={card.name}
+                style={{ width: "100%", height: "100%", borderRadius: "5px" }}
+                onError={() => console.log(`Failed to load image: ${card.image}`)}
+              />
+            </motion.div>
+          ))}
         </motion.div>
       )}
     </div>
