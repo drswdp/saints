@@ -106,7 +106,7 @@ function App() {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Garamond" }}>
+    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Garamond", position: "relative" }}>
       <h1>Saints for Sinners</h1>
       <button
         onClick={shuffleCards}
@@ -142,26 +142,8 @@ function App() {
         Clear Board
       </button>
 
-      <motion.div
-        onClick={() => !isShuffling && setShowDeck(!showDeck)}
-        animate={isShuffling ? {
-          y: [0, -20, 20, 0],
-          rotate: [0, 5, -5, 0],
-        } : {}}
-        transition={isShuffling ? { repeat: 3, duration: 0.5 } : {}}
-        style={{
-          cursor: "pointer",
-          marginTop: "20px",
-          width: "100px",
-          height: "150px",
-          display: "inline-block",
-        }}
-      >
-        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
-      </motion.div>
-
       {!isShuffling && (
-        <div style={{ position: "relative", width: "350px", height: "650px", margin: "0 auto", background: "#f0f0f0" }}>
+        <div style={{ position: "relative", width: "350px", height: "650px", margin: "0 auto", background: "#f0f0f0", display: "inline-block" }}>
           {/* Empty placeholders for card positions */}
           <div style={{ position: "absolute", width: "100px", height: "150px", left: "125px", top: "150px", border: "2px dashed #888", borderRadius: "5px" }}></div>
           <div style={{ position: "absolute", width: "100px", height: "150px", left: "125px", top: "310px", border: "2px dashed #888", borderRadius: "5px" }}></div>
@@ -192,6 +174,27 @@ function App() {
           ))}
         </div>
       )}
+
+      <motion.div
+        onClick={() => !isShuffling && setShowDeck(!showDeck)}
+        animate={isShuffling ? {
+          y: [0, -20, 20, 0],
+          rotate: [0, 5, -5, 0],
+        } : {}}
+        transition={isShuffling ? { repeat: 3, duration: 0.5 } : {}}
+        style={{
+          cursor: "pointer",
+          width: "100px",
+          height: "150px",
+          position: "absolute",
+          right: "20px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          display: "inline-block",
+        }}
+      >
+        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+      </motion.div>
 
       {cards.length > 0 && (
         <div style={{ marginTop: "20px" }}>
