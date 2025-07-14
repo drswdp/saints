@@ -40,20 +40,17 @@ function App() {
   const [cards, setCards] = useState([{ ...jesusCard, isFlipped: true, position: "center" }]);
   const [isShuffling, setIsShuffling] = useState(false);
   const [showDeck, setShowDeck] = useState(false);
-  const [selectedCardAnimation, setSelectedCardAnimation] = useState(null);
   const [tarotDeck, setTarotDeck] = useState(initialTarotDeck);
 
   const clearBoard = () => {
     setCards([{ ...jesusCard, isFlipped: true, position: "center" }]);
     setShowDeck(false);
-    setSelectedCardAnimation(null);
     setTarotDeck(initialTarotDeck); // Reset deck to initial state
   };
 
   const shuffleCards = () => {
     setIsShuffling(true);
     setShowDeck(false);
-    setSelectedCardAnimation(null);
     setTimeout(() => {
       const randomizedCards = tarotDeck
         .sort(() => Math.random() - 0.5)
@@ -83,11 +80,10 @@ function App() {
       const xOffset = col * 100 + 50;
       const yOffset = row * 150 + 50;
       setTarotDeck(tarotDeck.filter(c => c.id !== card.id)); // Remove card immediately
-      setSelectedCardAnimation({ card, from: { x: xOffset, y: yOffset }, to: getPositionStyle(targetPosition) });
-      setTimeout(() => {
-        setCards([...cards, { ...card, isFlipped: true, position: targetPosition }]);
-        setSelectedCardAnimation(null);
-      }, 500);
+      setCards(prevCards => [
+        ...prevCards,
+        { ...card, isFlipped: true, position: targetPosition, animateFrom: { x: xOffset, y: yOffset }, animateTo: getPositionStyle(targetPosition) }
+      ]);
     }
   };
 
@@ -146,18 +142,23 @@ function App() {
         Clear Board
       </button>
 
-      {isShuffling && (
-        <motion.div
-          animate={{
-            y: [0, -20, 20, 0],
-            rotate: [0, 5, -5, 0],
-          }}
-          transition={{ repeat: 3, duration: 0.5 }}
-          style={{ margin: "0 auto", width: "100px", height: "150px" }}
-        >
-          <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
-        </motion.div>
-      )}
+      <motion.div
+        onClick={() => !isShuffling && setShowDeck(!showDeck)}
+        animate={isShuffling ? {
+          y: [0, -20, 20, 0],
+          rotate: [0, 5, -5, 0],
+        } : {}}
+        transition={isShuffling ? { repeat: 3, duration: 0.5 } : {}}
+        style={{
+          cursor: "pointer",
+          marginTop: "20px",
+          width: "100px",
+          height: "150px",
+          display: "inline-block",
+        }}
+      >
+        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
+      </motion.div>
 
       {!isShuffling && (
         <div style={{ position: "relative", width: "350px", height: "650px", margin: "0 auto", background: "#f0f0f0" }}>
@@ -171,7 +172,6 @@ function App() {
           {cards.map((card, index) => (
             <motion.div
               key={card.id}
-              onClick={() => { /* Flip logic removed for simplicity, re-add if needed */ }}
               initial={{ x: card.animateFrom?.x || 0, y: card.animateFrom?.y || 0, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...getPositionStyle(card.position) }}
               transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.2 }}
@@ -190,42 +190,6 @@ function App() {
               />
             </motion.div>
           ))}
-          {selectedCardAnimation && (
-            <motion.div
-              key={selectedCardAnimation.card.id}
-              initial={{ x: selectedCardAnimation.from.x, y: selectedCardAnimation.from.y, opacity: 0 }}
-              animate={{ x: 0, y: 0, opacity: 1, ...selectedCardAnimation.to }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              style={{
-                width: "100px",
-                height: "150px",
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <img
-                src={selectedCardAnimation.card.image}
-                alt={selectedCardAnimation.card.name}
-                style={{ width: "100%", height: "100%", borderRadius: "5px" }}
-              />
-            </motion.div>
-          )}
-        </div>
-      )}
-
-      {selectedCardAnimation && (
-        <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
-          <img
-            src={selectedCardAnimation.card.image}
-            alt={selectedCardAnimation.card.name}
-            style={{ width: "200px", height: "300px", borderRadius: "10px" }}
-          />
-          <div style={{ maxWidth: "300px", textAlign: "left" }}>
-            <h3>{selectedCardAnimation.card.name}</h3>
-            <p>{selectedCardAnimation.card.bio}</p>
-          </div>
         </div>
       )}
 
@@ -241,19 +205,6 @@ function App() {
           </ul>
         </div>
       )}
-
-      <div
-        onClick={() => { setShowDeck(!showDeck); }}
-        style={{
-          cursor: "pointer",
-          marginTop: "20px",
-          width: "100px",
-          height: "150px",
-          display: "inline-block",
-        }}
-      >
-        <img src="/CardBack.png" alt="Deck" style={{ width: "100%", height: "100%" }} />
-      </div>
 
       {showDeck && (
         <motion.div
