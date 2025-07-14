@@ -88,8 +88,8 @@ function App() {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Arial" }}>
-      <h1>Saints Card Reading</h1>
+    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Garamond" }}>
+      <h1>Saints for Sinners</h1>
       <button
         onClick={shuffleCards}
         style={{
