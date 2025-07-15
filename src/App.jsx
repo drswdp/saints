@@ -40,17 +40,20 @@ function App() {
   const [cards, setCards] = useState([{ ...jesusCard, isFlipped: true, position: "center" }]);
   const [isShuffling, setIsShuffling] = useState(false);
   const [showDeck, setShowDeck] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
   const [tarotDeck, setTarotDeck] = useState(initialTarotDeck);
 
   const clearBoard = () => {
     setCards([{ ...jesusCard, isFlipped: true, position: "center" }]);
     setShowDeck(false);
+    setSelectedCard(null);
     setTarotDeck(initialTarotDeck); // Reset deck to initial state
   };
 
   const shuffleCards = () => {
     setIsShuffling(true);
     setShowDeck(false);
+    setSelectedCard(null);
     setTimeout(() => {
       const randomizedCards = tarotDeck
         .sort(() => Math.random() - 0.5)
@@ -105,6 +108,10 @@ function App() {
     return positions[position] || positions["below"];
   };
 
+  const flipCard = (card) => {
+    setSelectedCard(selectedCard?.id === card.id ? null : card);
+  };
+
   return (
     <div style={{ textAlign: "center", padding: "20px", fontFamily: "Garamond", position: "relative" }}>
       <h1>Saints for Sinners</h1>
@@ -154,6 +161,7 @@ function App() {
           {cards.map((card, index) => (
             <motion.div
               key={card.id}
+              onClick={() => flipCard(card)}
               initial={{ x: card.animateFrom?.x || 0, y: card.animateFrom?.y || 0, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1, ...getPositionStyle(card.position) }}
               transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.2 }}
@@ -245,6 +253,45 @@ function App() {
               </motion.div>
             );
           })}
+        </motion.div>
+      )}
+
+      {selectedCard && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedCard(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            background: "rgba(255, 255, 255, 0.9)",
+            padding: "20px",
+            borderRadius: "10px",
+          }}>
+            <img
+              src={selectedCard.image}
+              alt={selectedCard.name}
+              style={{ width: "200px", height: "300px", borderRadius: "10px", marginRight: "20px" }}
+            />
+            <div style={{ maxWidth: "300px", textAlign: "left" }}>
+              <h3>{selectedCard.name}</h3>
+              <p>{selectedCard.bio}</p>
+            </div>
+          </div>
         </motion.div>
       )}
     </div>
